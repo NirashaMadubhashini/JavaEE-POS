@@ -38,6 +38,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" id="linkCustomer" href="#">Customer</a></li>
                             <li><a class="dropdown-item" id="linkItem" href="#">Item</a></li>
+                            <li><a class="dropdown-item" id="linkOrderDetails" href="#">OrderDetails</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -235,7 +236,7 @@
             <tr>
                 <th scope="col">Item Code</th>
                 <th scope="col">Item Name</th>
-                <th scope="col">Price</th>
+                <th scope="col">Unit Price</th>
                 <th scope="col">Quantity</th>
 
             </tr>
@@ -259,9 +260,13 @@
                                placeholder="Auto-Generate">
                         <p><small id="lblorderId" class="text-danger pl-1"></small></p>
                     </div>
-                    <div class="form-group ">
-                        <label for="txtDate">Date</label>
-                        <input class="form-control" id="txtDate" name="OrderDate" type="date">
+                    <!--                    <div class="form-group ">-->
+                    <!--                        <label for="txtDate">Date</label>-->
+                    <!--                        <input class="form-control" id="txtDate" name="OrderDate" type="date">-->
+                    <!--                    </div>-->
+                    <div class="form-group">
+                        <label for="txtOrderDate">Order Date</label>
+                        <input class="form-control" id="txtOrderDate" type="date">
                     </div>
                     <div class="form-group ">
                         <label for="txtTime">Time</label>
@@ -283,15 +288,15 @@
                     </div>
                     <div class="form-group ">
                         <label for="txtCusName">Customer-Name</label>
-                        <input class="form-control" id="txtCusName" name="Name" type="text">
+                        <input class="form-control" id="txtCusName" name="Name" type="text" disabled>
                     </div>
                     <div class="form-group ">
                         <label for="txtAddress">Address</label>
-                        <input class="form-control" id="txtAddress" name="Address" type="text">
+                        <input class="form-control" id="txtAddress" name="Address" type="text" disabled>
                     </div>
                     <div class="form-group ">
                         <label for="txtSalary">Salary</label>
-                        <input class="form-control" id="txtSalary" name="Salary" type="text">
+                        <input class="form-control" id="txtSalary" name="Salary" type="text" disabled>
                     </div>
                 </div>
             </div>
@@ -308,15 +313,15 @@
                     </div>
                     <div class="form-group ">
                         <label for="txtItemName">Item-Name</label>
-                        <input class="form-control" id="txtItemName" name="Item-Name" type="text">
+                        <input class="form-control" id="txtItemName" name="Item-Name" type="text" disabled>
                     </div>
                     <div class="form-group ">
                         <label for="txtUnitPrice">Unit-Price</label>
-                        <input class="form-control" id="txtUnitPrice" name="Unit-Price" type="text">
+                        <input class="form-control" id="txtUnitPrice" name="Unit-Price" type="text" disabled>
                     </div>
                     <div class="form-group ">
                         <label for="txt-qtyOnHand">QuantityOnHand</label>
-                        <input class="form-control" id="txt-qtyOnHand" name="QuantityOnHand" type="text">
+                        <input class="form-control" id="txt-qtyOnHand" name="QuantityOnHand" type="text" disabled>
                     </div>
                     <div class="form-group ">
                         <label for="txt-qty">Order-Quantity</label>
@@ -328,6 +333,7 @@
                     <button type="button" id="btnAddToCart" class="btn btn-primary"><i class="fa fa-shopping-cart">&nbsp;</i>Add
                         To Cart
                     </button>
+                    <button class="btn btn-secondary rounded-2" type="submit" id="btnClearItemFields">Clear</button>
                 </div>
             </div>
         </div>
@@ -350,15 +356,21 @@
                             <span class="control-error"
                                   id="cash-empty-error"></span>
                         </div>
-                        <div class="form-group ">
+                        <div class="form-group">
                             <label for="txtChange">Change</label>
-                            <input type="text" class="form-control" id="txtChange" required>
+                            <input type="text" class="form-control" id="txtChange" disabled>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="txtNoOfItems">No Of Items</label>
+                            <input class="form-control" disabled id="txtNoOfItems" type="text">
                         </div>
                         <br>
                         <br>
                         <button type="button" id="btnPay" class="btn btn-success"><i
                                 class="fa fa-shopping-cart">&nbsp;</i>Purchase Order
                         </button>
+                        <button class="btn btn-secondary " type="submit" id="btnCancelOrder">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -368,11 +380,10 @@
             <table class="table table-bordered mx-auto mt-5 ml-sm-0 table-hover" id="tblOrder">
                 <thead class="table-dark">
                 <tr>
-                    <th scope="col">OId</th>
                     <th scope="col">Item-Code</th>
                     <th scope="col">Item-Name</th>
-                    <th scope="col">Qty</th>
                     <th scope="col">Per-Rs.</th>
+                    <th scope="col">Qty</th>
                     <th scope="col">Tot</th>
                 </tr>
                 </thead>
@@ -384,24 +395,45 @@
         </div>
     </div>
 </section>
+<section id="orderDetails">
+    <h3 class="text-primary mt-2">Order Details</h3>
+    <div class="orderTableDiv">
+        <table class="table bg-light table-bordered w-100 h-100 table-hover">
+            <thead class="bg-info">
+            <tr>
+                <th>Order Id</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Unit Price</th>
+                <th>Buy Qty</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody id="orderDetailsTable">
+
+            </tbody>
+        </table>
+    </div>
+</section>
 
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/jQuery/jquery-3.6.0.min.js"></script>
 <script src="controller/CustomerController.js"></script>
 <script src="controller/ItemController.js"></script>
 <script src="controller/OrderController.js"></script>
-<script src="db/DB.js"></script>
-<script src="model/CustomerDTO.js"></script>
-<script src="model/ItemDTO.js"></script>
-<script src="model/OrderDTO.js"></script>
-<script src="model/OrderDetailDTO.js"></script>
-<script src="model/CartDTO.js"></script>
+<script src="model/tm/CartTM.js"></script>
+<!--<script src="model/CustomerDTO.js"></script>-->
+<!--<script src="model/ItemDTO.js"></script>-->
+<!--<script src="model/OrderDTO.js"></script>-->
+<!--<script src="model/OrderDetailDTO.js"></script>-->
+<!--<script src="model/CartDTO.js"></script>-->
 
 <script>
     $("#home").css("display", "block");
     $("#customer").css("display", "none");
     $("#item").css("display", "none");
     $("#placeOrder").css("display", "none");
+    $("#orderDetails").css("display", "none");
 
 
     $("#linkCustomer").click(function () {
@@ -409,14 +441,14 @@
         $("#home").css("display", "none");
         $("#item").css("display", "none");
         $("#placeOrder").css("display", "none");
-
+        $("#orderDetails").css("display", "none");
     });
     $("#linkCustomerPage").click(function () {
         $("#customer").css("display", "block");
         $("#home").css("display", "none");
         $("#item").css("display", "none");
         $("#placeOrder").css("display", "none");
-
+        $("#orderDetails").css("display", "none");
     });
 
     $("#linkItem").click(function () {
@@ -424,14 +456,14 @@
         $("#customer").css("display", "none");
         $("#home").css("display", "none");
         $("#placeOrder").css("display", "none");
-
+        $("#orderDetails").css("display", "none");
     });
     $("#linkItemPage").click(function () {
         $("#item").css("display", "block");
         $("#customer").css("display", "none");
         $("#home").css("display", "none");
         $("#placeOrder").css("display", "none");
-
+        $("#orderDetails").css("display", "none");
     });
 
     $("#linkOrder").click(function () {
@@ -439,14 +471,29 @@
         $("#item").css("display", "none");
         $("#customer").css("display", "none");
         $("#home").css("display", "none");
-
+        $("#orderDetails").css("display", "none");
     });
     $("#linkOrderPage").click(function () {
         $("#placeOrder").css("display", "block");
         $("#item").css("display", "none");
         $("#customer").css("display", "none");
         $("#home").css("display", "none");
+        $("#orderDetails").css("display", "none");
+    });
 
+    $("#linkOrderDetails").click(function () {
+        $("#orderDetails").css("display", "block");
+        $("#placeOrder").css("display", "none");
+        $("#item").css("display", "none");
+        $("#customer").css("display", "none");
+        $("#home").css("display", "none");
+    });
+    $("#linkOrderDetailsPage").click(function () {
+        $("#orderDetails").css("display", "block");
+        $("#placeOrder").css("display", "none");
+        $("#item").css("display", "none");
+        $("#customer").css("display", "none");
+        $("#home").css("display", "none");
     });
 
 
