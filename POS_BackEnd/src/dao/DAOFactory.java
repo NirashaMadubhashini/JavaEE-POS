@@ -1,8 +1,13 @@
 package dao;
 
 
+import dao.custom.impl.CustomerDAOImpl;
+import dao.custom.impl.ItemDAOImpl;
+
 public class DAOFactory {
+
     private static DAOFactory daoFactory;
+
     private DAOFactory() {
 
     }
@@ -14,23 +19,20 @@ public class DAOFactory {
         return daoFactory;
     }
 
-    public SuperDAO getDAO(DAOTypes daoTypes) {
-        switch (daoTypes) {
-            case CUSTOMER:
-                return new CustomerDAOImpl();
+    public SuperDAO getDAO(DAOTypes types){
+
+        switch (types){
             case ITEM:
                 return new ItemDAOImpl();
-            case ORDER:
-                return new OrderDAOImpl();
-            case ORDERDETAIL:
-                return new OrderDetailDAOImpl();
+            case CUSTOMER:
+                return new CustomerDAOImpl();
             default:
                 return null;
         }
+
     }
 
-    public enum DAOTypes {
-        CUSTOMER, ITEM, ORDER, ORDERDETAIL
+    public enum DAOTypes{
+        CUSTOMER, ITEM, ORDERS, ORDERDETAILS
     }
 }
-

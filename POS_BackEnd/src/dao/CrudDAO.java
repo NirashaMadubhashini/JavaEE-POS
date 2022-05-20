@@ -1,12 +1,22 @@
 package dao;
 
-import javax.json.JsonArray;
+
+import entity.Customer;
+import javafx.collections.ObservableList;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 
-public interface CrudDAO<T,ID> extends SuperDAO{
-    JsonArray getAll() throws SQLException, ClassNotFoundException;
-    boolean add(T t) throws SQLException, ClassNotFoundException;
-    boolean update(T t) throws SQLException, ClassNotFoundException;
-    boolean delete(ID id) throws SQLException, ClassNotFoundException;
-    T search(ID id) throws SQLException, ClassNotFoundException;
+
+public interface CrudDAO <T, ID>extends SuperDAO{
+
+    boolean add(T t, Connection connection) throws SQLException, ClassNotFoundException;
+
+    boolean delete(ID id, Connection connection) throws SQLException, ClassNotFoundException;
+
+    boolean update(T t, Connection connection) throws SQLException, ClassNotFoundException;
+
+    T search(ID id, Connection connection) throws SQLException, ClassNotFoundException;
+
+    ObservableList<Customer> getAll(Connection connection) throws SQLException, ClassNotFoundException;
 }

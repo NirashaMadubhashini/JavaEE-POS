@@ -1,27 +1,28 @@
 package entity;
 
 public class Item {
-    private String code;
+
+    private String itemCode;
     private String name;
-    private double unitPrice;
-    private int qty;
+    private int qtyOnHand;
+    private double price;
 
     public Item() {
     }
 
-    public Item(String code, String name, double unitPrice, int qty) {
-        this.code = code;
+    public Item(String itemCode, String name, int qtyOnHand, double price) {
+        this.itemCode = itemCode;
         this.name = name;
-        this.unitPrice = unitPrice;
-        this.qty = qty;
+        this.qtyOnHand = qtyOnHand;
+        this.price = price;
     }
 
-    public String getCode() {
-        return code;
+    public String getItemCode() {
+        return itemCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
     public String getName() {
@@ -32,19 +33,19 @@ public class Item {
         this.name = name;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public int getQtyOnHand() {
+        return qtyOnHand;
     }
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setQtyOnHand(int qtyOnHand) {
+        this.qtyOnHand = qtyOnHand;
     }
 
-    public int getQty() {
-        return qty;
+    public double getPrice() {
+        return price;
     }
 
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -1,19 +1,20 @@
 package entity;
 
 public class Customer {
+
     private String id;
     private String name;
     private String address;
-    private double salary;
+    private String contact;
 
     public Customer() {
     }
 
-    public Customer(String id, String name, String address, double salary) {
+    public Customer(String id, String name, String address, String contact) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.salary = salary;
+        this.contact = contact;
     }
 
     public String getId() {
@@ -40,11 +41,11 @@ public class Customer {
         this.address = address;
     }
 
-    public double getSalary() {
-        return salary;
+    public String getContact() {
+        return contact;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

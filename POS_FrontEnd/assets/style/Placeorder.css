@@ -25,3 +25,22 @@
   justify-content: center;
   text-align: center;
 }
+#total-text{
+  color: #3d98ef !important;
+  font-size: 15px !important;
+}
+
+#total-text1{
+  color: #ef5350 !important;
+  font-size: 15px !important;
+}
+
+#total{
+  color: #3d98ef !important;
+  font-size: 30px !important;
+}
+
+#subtotal{
+  color: #ef5350 !important;
+  font-size: 30px !important;
+}
