@@ -24,11 +24,9 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         try{
-
             String option = req.getParameter("option");
-            String code = req.getParameter("itemCode");
+            String code = req.getParameter("iCode");
             resp.setContentType("application/json");
             Connection connection = dataSource.getConnection();
             PrintWriter writer = resp.getWriter();
@@ -96,17 +94,15 @@ public class ItemServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String itemCode = req.getParameter("itemCode");
-        String itemName = req.getParameter("itemName");
-        String itemQuantity = req.getParameter("itemQuantity");
-        String itemPrice = req.getParameter("itemPrice");
+        String itemCode = req.getParameter("iCode");
+        String itemName = req.getParameter("iName");
+        String itemQuantity = req.getParameter("iQuantity");
+        String itemPrice = req.getParameter("iPrice");
 
         resp.addHeader("Access-Control-Allow-Origin", "*");
 
@@ -147,7 +143,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String itemCode = req.getParameter("itemCode");
+        String itemCode = req.getParameter("iCode");
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
         resp.addHeader("Access-Control-Allow-Origin", "*");
@@ -190,10 +186,10 @@ public class ItemServlet extends HttpServlet {
 
         JsonReader reader = Json.createReader(req.getReader());
         JsonObject jsonObject = reader.readObject();
-        String itemCode = jsonObject.getString("itemCode");
-        String itemName = jsonObject.getString("itemName");
-        String itemQty = jsonObject.getString("itemQty");
-        String itemPrice = jsonObject.getString("itemPrice");
+        String itemCode = jsonObject.getString("iCode");
+        String itemName = jsonObject.getString("iName");
+        String itemQty = jsonObject.getString("iQuantity");
+        String itemPrice = jsonObject.getString("iPrice");
 
         PrintWriter writer = resp.getWriter();
         resp.setContentType("Application/json");
@@ -232,6 +228,11 @@ public class ItemServlet extends HttpServlet {
             writer.print(objectBuilder.build());
             e.printStackTrace();
         }
-
+    }
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "DELETE, PUT");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
 }
