@@ -2,7 +2,6 @@
   <artifact type="war" name="backEnd">
     <output-path>$PROJECT_DIR$/out/artifacts/backEnd</output-path>
     <root id="archive" name="backEnd.war">
-      <element id="javaee-facet-resources" facet="POS_BackEnd/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="POS_BackEnd" />
@@ -13,6 +12,7 @@
           <element id="library" level="project" name="mysql-connector-java-8.0.25" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="POS_BackEnd/web/Web" />
     </root>
   </artifact>
 </component>

@@ -1,7 +1,6 @@
 package dao;
 
 
-import entity.Customer;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
@@ -18,5 +17,5 @@ public interface CrudDAO <T, ID>extends SuperDAO{
 
     T search(ID id, Connection connection) throws SQLException, ClassNotFoundException;
 
-    ObservableList<Customer> getAll(Connection connection) throws SQLException, ClassNotFoundException;
+    ObservableList<T> getAll(Connection connection) throws SQLException, ClassNotFoundException;
 }

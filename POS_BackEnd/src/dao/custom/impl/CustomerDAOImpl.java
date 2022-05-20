@@ -19,18 +19,29 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(String s, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean delete(String id, Connection connection) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate(connection,"DELETE FROM Customer WHERE id=?", id);
     }
 
     @Override
     public boolean update(Customer customer, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+        return CrudUtil.executeUpdate(connection, "UPDATE Customer SET name=?,address=?,contact=? WHERE id=?",customer.getName(),
+                customer.getAddress(),customer.getContact(),customer.getId());
     }
 
     @Override
-    public Customer search(String s, Connection connection) throws SQLException, ClassNotFoundException {
-        return null;
+    public Customer search(String id, Connection connection) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.executeQuery(connection,"SELECT * FROM Customer WHERE id =?",id);
+        if (rst.next()){
+            return new Customer(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4)
+            );
+        }else {
+            return null;
+        }
     }
 
 

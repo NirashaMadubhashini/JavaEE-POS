@@ -120,36 +120,35 @@
 </section>
 
 <section id="customer">
-    <form id="customerForm">
     <div class="row  container-fluid mt-4" style="margin:0; padding: 0 ">
         <div class=" col-xl-4 col-lg-4 col-md-6 col-12 ms-5">
             <div class="card bg-light mt-2 ms-5">
                 <div class="card-header bg-primary text-white font-weight-bold" style="text-align: center;">Customer
                 </div>
                 <div class="card-body" id="form1">
-                    <form>
+                    <form id="customerForm">
                         <div class="form-group">
                             <label for="customerId">Customer Id</label>
-                            <input type="customerId" class="form-control" id="customerId">
+                            <input name="cusId" class="form-control" id="customerId">
                             <p><small id="lblcusid" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="customerName">Customer Name</label>
-                            <input type="customerName" class="form-control" id="customerName">
+                            <input name="cusName" class="form-control" id="customerName">
                             <p><small id="lblcusname" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="customerAddress">Customer Address</label>
-                            <input type="customerAddress" class="form-control" id="customerAddress">
+                            <input name="cusAddress" class="form-control" id="customerAddress">
                             <p><small id="lblcusaddress" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="customerTp">Customer Tp</label>
-                            <input type="customerTp" class="form-control" id="customerTp">
+                            <input name="cusTp" class="form-control" id="customerTp">
                             <p><small id="lblcussalary" class="text-danger pl-1"></small></p>
                         </div>
                         <br>
-                        <button type="submit" id="btnAddCustomer" class="btn btn-primary">Add</button>
+                        <button type="button" id="btnAddCustomer" class="btn btn-primary">Add</button>
                         <button class="btn btn-success" id="btnGetAllCustomer" type="button">Get All</button>
                         <button type="button" id="btnUpdateCustomer" class="btn btn-info"> Update</button>
                         <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
@@ -183,39 +182,37 @@
             </tbody>
         </table>
     </div>
-    </form>
 </section>
 
 <section id="item">
-    <form id="itemForm">
     <div class="row  container-fluid mt-4" style="margin:0; padding: 0 ">
         <div class=" col-xl-4 col-lg-4 col-md-6 col-12 ms-5">
             <div class="card bg-light mt-2 ms-5">
                 <div class="card-header bg-primary text-white font-weight-bold" style="text-align: center;">Item</div>
                 <div class="card-body">
-                    <form>
+                    <form id="itemForm">
                         <div class="form-group">
                             <label for="itemCode">Item Code</label>
-                            <input type="itemCode" class="form-control" id="itemCode">
+                            <input name="itemCode" class="form-control" id="itemCode">
                             <p><small id="lblitemcode" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="itemName">Item Name</label>
-                            <input type="itemName" class="form-control" id="itemName">
+                            <input name="itemName" class="form-control" id="itemName">
                             <p><small id="lblitemname" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="itemQuantity">Quantity</label>
-                            <input type="itemQuantity" class="form-control" id="itemQuantity">
+                            <input name="itemQuantity" class="form-control" id="itemQuantity">
                             <p><small id="lblitemquantity" class="text-danger pl-1"></small></p>
                         </div>
                         <div class="form-group">
                             <label for="itemPrice">Item Price</label>
-                            <input type="itemPrice" class="form-control" id="itemPrice">
+                            <input name="itemPrice" class="form-control" id="itemPrice">
                             <p><small id="lblitemprice" class="text-danger pl-1"></small></p>
                         </div>
                         <br>
-                        <button type="submit" id="btnAddItem" class="btn btn-primary">Add</button>
+                        <button type="button" id="btnAddItem" class="btn btn-primary">Add</button>
                         <button class="btn btn-success" id="btnGetAllItem" type="button">Get All</button>
                         <button type="button" id="btnUpdateItem" class="btn btn-info"> Update</button>
                         <button type="button" id="btnDeleteItem" class="btn btn-danger">Delete</button>
@@ -247,11 +244,9 @@
             </tr>
             </thead>
             <tbody id="itemTable">
-
             </tbody>
         </table>
     </div>
-    </form>
 </section>
 
 <section id="placeOrder">
@@ -260,7 +255,7 @@
             <div class="card bg-light mt-2 ms-5">
                 <div class="card-header bg-primary text-white font-weight-bold" style="text-align: center;">Order</div>
                 <div class="card-body">
-                    <div class="form-group ">
+                    <div class="form-group">
                         <label for="txtOrderId">Order-Id</label>
                         <input class="form-control" id="txtOrderId" name="OrderId" type="text"
                                disabled>
@@ -409,7 +404,8 @@
     </div>
 </section>
 
-    <section class="container-fluid mt-5" id="orderDetails">
+<section id="orderDetails">
+    <div class="container-fluid mt-5">
         <section class="row mt-4">
             <div class="col" style="height:350px; overflow-y: scroll">
                 <table class="table table-hover">
@@ -444,11 +440,11 @@
                     </tr>
                     </thead>
                     <tbody id="orderDetailTable">
-
                     </tbody>
                 </table>
             </div>
         </section>
+    </div>
     </section>
 
 
@@ -457,7 +453,6 @@
 <script src="controller/CustomerController.js"></script>
 <script src="controller/ItemController.js"></script>
 <script src="controller/OrderController.js"></script>
-<script src="model/tm/CartTM.js"></script>
 <!--<script src="model/CustomerDTO.js"></script>-->
 <!--<script src="model/ItemDTO.js"></script>-->
 <!--<script src="model/OrderDTO.js"></script>-->

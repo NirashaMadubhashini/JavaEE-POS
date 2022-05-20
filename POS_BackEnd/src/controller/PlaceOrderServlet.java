@@ -16,17 +16,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author : Yasiru Dahanayaka
- * @name : JavaEE POS System
- * @date : 5/11/2022
- * @month : 05
- * @year : 2022
- * @since : 0.1.0
- **/
 @WebServlet(urlPatterns = "/orders")
 public class PlaceOrderServlet extends HttpServlet {
-
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
 

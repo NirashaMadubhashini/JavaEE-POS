@@ -18,6 +18,7 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/item")
 public class ItemServlet extends HttpServlet {
 
+
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
 
