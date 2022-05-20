@@ -31,7 +31,7 @@ public class CustomerServlet extends HttpServlet {
         try {
 
             String option = req.getParameter("option");
-            String customerID = req.getParameter("cusID");
+            String customerID = req.getParameter("cusId");
             resp.setContentType("application/json");
             Connection connection = dataSource.getConnection();
             PrintWriter writer = resp.getWriter();
@@ -88,14 +88,12 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String queryString = req.getQueryString();
-        System.out.println(queryString);
 
        CustomerDTO customerDTO = new CustomerDTO(
-                req.getParameter("cusID"),
+                req.getParameter("cusId"),
                 req.getParameter("cusName"),
                 req.getParameter("cusAddress"),
-                req.getParameter("cusContact")
+                req.getParameter("cusTp")
         );
 
         PrintWriter writer = resp.getWriter();
@@ -108,10 +106,8 @@ public class CustomerServlet extends HttpServlet {
         try {
             connection = dataSource.getConnection();
 
-            String customerID = req.getParameter("cusID");
-            System.out.println(customerID);
+            String customerID = req.getParameter("cusId");
 
-            System.out.println(customerDTO.getCusId());
             try {
                 if (customerBO.addCustomer(connection, customerDTO)) {
                     JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
@@ -148,7 +144,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String customerID = req.getParameter("customerID");
+        String customerID = req.getParameter("cusId");
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
 
@@ -250,6 +246,5 @@ public class CustomerServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.addHeader("Access-Control-Allow-Methods", "DELETE, PUT");
         resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
-
     }
 }

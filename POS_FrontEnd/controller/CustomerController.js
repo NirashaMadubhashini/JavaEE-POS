@@ -8,17 +8,8 @@ loadAllCustomer();
 
 
 $("#btnAddCustomer").click(function () {
-    let data = $("#customerForm").serialize();
 
-    if ($("#customerId").val() == '') {
-        alert("Can not be Customer Id empty");
-    } else if ($("#customerName").val() == '') {
-        alert("Can not be Customer Name empty");
-    }else if ($("#customerAddress").val() == '') {
-        alert("Can not be Customer Address empty");
-    }else if ($("#customerTp").val() == '') {
-        alert("Can not be Customer Contact empty");
-    }else{
+    let data = $("#customerForm").serialize();
         console.log(data);
         $.ajax({
             url: "http://localhost:8080/backEnd/customer",
@@ -41,8 +32,6 @@ $("#btnAddCustomer").click(function () {
                 console.log(error);
             }
         });
-
-    }
 
 });
 
