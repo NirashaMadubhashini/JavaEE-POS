@@ -1,4 +1,4 @@
-package controller;
+package servlet;
 
 import javax.annotation.Resource;
 import javax.json.Json;

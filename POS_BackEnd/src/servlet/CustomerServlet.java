@@ -1,4 +1,4 @@
-package controller;
+package servlet;
 
 import bo.BOFactory;
 import bo.custom.CustomerBO;
@@ -89,7 +89,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-       CustomerDTO customerDTO = new CustomerDTO(
+        CustomerDTO customerDTO = new CustomerDTO(
                 req.getParameter("cusId"),
                 req.getParameter("cusName"),
                 req.getParameter("cusAddress"),

@@ -13,7 +13,7 @@ $("#btnAddItem").click(function (){
         alert("Can not be Item Price empty");
     }else{
         $.ajax({
-            url:"http://localhost:8080/backEnd/item",
+            url:"http://localhost:8085/backEnd/item",
             method:"POST",
             data:data,
             success: function (res){
@@ -68,7 +68,7 @@ function bindClickEvent() {
 function loadAllItem(){
     $("#itemTable").empty();
     $.ajax({
-        url:"http://localhost:8080/backEnd/item?option=GETALL",
+        url:"http://localhost:8085/backEnd/item?option=GETALL",
         method:"GET",
         success:function (resp){
             for (const item of resp.data){
@@ -85,7 +85,7 @@ $("#btnDeleteItem").click(function (){
     let itemCode = $("#itemCode").val();
 
     $.ajax({
-        url: "http://localhost:8080/backEnd/item?itemCode=" + itemCode,
+        url: "http://localhost:8085/backEnd/item?itemCode=" + itemCode,
         method: "DELETE",
 
         success: function (res) {
@@ -118,7 +118,7 @@ $("#btnUpdateItem").click(function (){
         itemPrice: $("#itemPrice").val()
     };
     $.ajax({
-        url: "http://localhost:8080/backEnd/item",
+        url: "http://localhost:8085/backEnd/item",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(itemOb),
@@ -144,7 +144,7 @@ $("#btnSearchItem").click(function (){
     let itemCode = $("#txtSearchItemCode").val();
     $("#itemTable").empty();
     $.ajax({
-        url:"http://localhost:8080/backEnd/item?option=SEARCH&itemCode=" + itemCode,
+        url:"http://localhost:8085/backEnd/item?option=SEARCH&itemCode=" + itemCode,
         method:"GET",
         success:function (resp){
             for (const item of resp.data){

@@ -10,28 +10,28 @@ loadAllCustomer();
 $("#btnAddCustomer").click(function () {
 
     let data = $("#customerForm").serialize();
-        console.log(data);
-        $.ajax({
-            url: "http://localhost:8080/backEnd/customer",
-            method: "POST",
-            data: data,
-            success: function (res) {
-                console.log(res);
-                if (res.status == 200) {
-                    loadAllCustomer();
-                    alert(res.message);
-                    resetCustomer();
-                } else {
-                    console.log(res)
-                    alert(res.data);
-                }
-            },
-            error: function (ob, textStatus, error) {
-                console.log(ob);
-                console.log(textStatus);
-                console.log(error);
+    console.log(data);
+    $.ajax({
+        url: "http://localhost:8085/backEnd/customer",
+        method: "POST",
+        data: data,
+        success: function (res) {
+            console.log(res);
+            if (res.status == 200) {
+                loadAllCustomer();
+                alert(res.message);
+                resetCustomer();
+            } else {
+                console.log(res)
+                alert(res.data);
             }
-        });
+        },
+        error: function (ob, textStatus, error) {
+            console.log(ob);
+            console.log(textStatus);
+            console.log(error);
+        }
+    });
 
 });
 
@@ -47,7 +47,7 @@ function resetCustomer() {
 function loadAllCustomer() {
     $("#customerTable").empty();
     $.ajax({
-        url: "http://localhost:8080/backEnd/customer?option=GETALL",
+        url: "http://localhost:8085/backEnd/customer?option=GETALL",
         method: "GET",
         success: function (resp) {
             for (const customer of resp.data) {
@@ -66,7 +66,7 @@ $("#btnDelete").click(function () {
     let customerID = $("#customerId").val();
 
     $.ajax({
-        url: "http://localhost:8080/backEnd/customer?customerID=" + customerID,
+        url: "http://localhost:8085/backEnd/customer?customerID=" + customerID,
         method: "DELETE",
 
         success: function (res) {
@@ -98,7 +98,7 @@ $("#btnUpdateCustomer").click(function () {
         contact: $("#customerTp").val()
     };
     $.ajax({
-        url: "http://localhost:8080/backEnd/customer",
+        url: "http://localhost:8085/backEnd/customer",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(cusOb),
@@ -124,7 +124,7 @@ $("#btnSearch").click(function () {
     let customerID = $("#txtSearchCusID").val();
     $("#customerTable").empty();
     $.ajax({
-        url: "http://localhost:8080/backEnd/customer?option=SEARCH&customerID=" + customerID,
+        url: "http://localhost:8085/backEnd/customer?option=SEARCH&customerID=" + customerID,
         method: "GET",
         success: function (resp) {
             let row = `<tr><td>${resp.id}</td><td>${resp.name}</td><td>${resp.address}</td><td>${resp.contact}</td></tr>`;
