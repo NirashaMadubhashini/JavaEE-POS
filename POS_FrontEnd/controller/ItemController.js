@@ -1,21 +1,19 @@
 loadAllItem();
 
 $("#btnAddItem").click(function (){
-    let data = $("#itemForm").serialize();
-
-    if ($("#itemCode").val() == '') {
-        alert("Can not be Item Code empty");
-    } else if ($("#itemName").val() == '') {
-        alert("Can not be Item Name empty");
-    }else if ($("#itemQuantity").val() == '') {
-        alert("Can not be Item Quantity empty");
-    }else if ($("#itemPrice").val() == '') {
-        alert("Can not be Item Price empty");
-    }else{
+    let itemOb = {
+        "itemCode": $("#itemCode").val(),
+        "itemName": $("#itemName").val(),
+        "itemQty": $("#itemQuantity").val(),
+        "itemPrice": $("#itemPrice").val()
+    };
+    // let data = $("#itemForm").serialize();
         $.ajax({
             url:"http://localhost:8085/backEnd/item",
             method:"POST",
-            data:data,
+            contentType: "application/json",
+            data: JSON.stringify(itemOb),
+            // data: data,
             success: function (res){
                 if (res.status == 200){
                     loadAllItem();
@@ -31,8 +29,6 @@ $("#btnAddItem").click(function (){
                 console.log(error);
             }
         });
-    }
-
 });
 
 $("#btnGetAllItem").click(function (){
@@ -48,23 +44,6 @@ function resetItem(){
     $("#itemPrice").val("");
 }
 
-function bindClickEvent() {
-
-    $("#itemTable>tr").click(function () {
-
-        let id = $(this).children().eq(0).text();
-        let name = $(this).children().eq(1).text();
-        let qtyOnHand = $(this).children().eq(2).text();
-        let price = $(this).children().eq(3).text();
-
-        $("#itemCode").val(id);
-        $("#itemName").val(name);
-        $("#itemQuantity").val(qtyOnHand);
-        $("#itemPrice").val(price);
-
-    });
-}
-
 function loadAllItem(){
     $("#itemTable").empty();
     $.ajax({
@@ -72,7 +51,7 @@ function loadAllItem(){
         method:"GET",
         success:function (resp){
             for (const item of resp.data){
-                let row = `<tr><td>${item.itemCode}</td><td>${item.name}</td><td>${item.qtyOnHand}</td><td>${item.price}</td></tr>`;
+                let row = `<tr><td>${item.itemCode}</td><td>${item.itemName}</td><td>${item.itemQty}</td><td>${item.itemPrice}</td></tr>`;
                 $("#itemTable").append(row);
 
             }
@@ -85,7 +64,7 @@ $("#btnDeleteItem").click(function (){
     let itemCode = $("#itemCode").val();
 
     $.ajax({
-        url: "http://localhost:8085/backEnd/item?itemCode=" + itemCode,
+        url: "http://localhost:8085/backEnd/item?iCode=" + itemCode,
         method: "DELETE",
 
         success: function (res) {
@@ -108,7 +87,6 @@ $("#btnDeleteItem").click(function (){
         }
     });
 });
-
 
 $("#btnUpdateItem").click(function (){
     let itemOb = {
@@ -144,14 +122,30 @@ $("#btnSearchItem").click(function (){
     let itemCode = $("#txtSearchItemCode").val();
     $("#itemTable").empty();
     $.ajax({
-        url:"http://localhost:8085/backEnd/item?option=SEARCH&itemCode=" + itemCode,
+        url:"http://localhost:8085/backEnd/item?option=SEARCH&iCode=" + itemCode,
         method:"GET",
         success:function (resp){
-            for (const item of resp.data){
-                let row = `<tr><td>${item.itemCode}</td><td>${item.name}</td><td>${item.qtyOnHand}</td><td>${item.price}</td></tr>`;
+                let row = `<tr><td>${resp.itemCode}</td><td>${resp.name}</td><td>${resp.qtyOnHand}</td><td>${resp.price}</td></tr>`;
                 $("#itemTable").append(row);
-            }
             bindClickEvent();
         }
     });
 });
+
+function bindClickEvent() {
+
+    $("#itemTable>tr").click(function () {
+
+        let id = $(this).children().eq(0).text();
+        let name= $(this).children().eq(1).text();
+        let qtyOnHand = $(this).children().eq(2).text();
+        let price = $(this).children().eq(3).text();
+
+        $("#itemCode").val(id);
+        $("#itemName").val(name);
+        $("#itemQuantity").val(qtyOnHand);
+        $("#itemPrice").val(price);
+
+    });
+}
+

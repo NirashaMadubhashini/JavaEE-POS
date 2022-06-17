@@ -1,26 +1,32 @@
 package dto;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.util.ArrayList;
 
 public class OrdersDTO {
 
     private String orderId;
     private String cId;
     private Date orderDate;
-    private Time orderTime;
     private double total;
     private double discount;
     private double subTotal;
+    private ArrayList<OrderDetailsDTO> orderDetail;
 
-    public OrdersDTO() {
-    }
-
-    public OrdersDTO(String orderId, String cId, Date orderDate, Time orderTime, double total, double discount, double subTotal) {
+    public OrdersDTO(String orderId, String cId, Date orderDate, double total, double discount, double subTotal, ArrayList<OrderDetailsDTO> orderDetail) {
         this.orderId = orderId;
         this.cId = cId;
         this.orderDate = orderDate;
-        this.orderTime = orderTime;
+        this.total = total;
+        this.discount = discount;
+        this.subTotal = subTotal;
+        this.orderDetail = orderDetail;
+    }
+
+    public OrdersDTO(String orderId, String cId, Date orderDate, double total, double discount, double subTotal) {
+        this.orderId = orderId;
+        this.cId = cId;
+        this.orderDate = orderDate;
         this.total = total;
         this.discount = discount;
         this.subTotal = subTotal;
@@ -50,14 +56,6 @@ public class OrdersDTO {
         this.orderDate = orderDate;
     }
 
-    public Time getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(Time orderTime) {
-        this.orderTime = orderTime;
-    }
-
     public double getTotal() {
         return total;
     }
@@ -82,16 +80,24 @@ public class OrdersDTO {
         this.subTotal = subTotal;
     }
 
+    public ArrayList<OrderDetailsDTO> getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(ArrayList<OrderDetailsDTO> orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+
     @Override
     public String toString() {
         return "OrdersDTO{" +
                 "orderId='" + orderId + '\'' +
                 ", cId='" + cId + '\'' +
                 ", orderDate=" + orderDate +
-                ", orderTime=" + orderTime +
                 ", total=" + total +
                 ", discount=" + discount +
                 ", subTotal=" + subTotal +
+                ", orderDetail=" + orderDetail +
                 '}';
     }
 }

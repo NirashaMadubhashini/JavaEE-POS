@@ -4,17 +4,19 @@ public class OrderDetailsDTO {
 
     private String oId;
     private String iCode;
-    private double oQty;
+    private int oQty;
     private double price;
+    private double total;
 
     public OrderDetailsDTO() {
     }
 
-    public OrderDetailsDTO(String oId, String iCode, double oQty, double price) {
+    public OrderDetailsDTO(String oId, String iCode, int oQty, double price, double total) {
         this.oId = oId;
         this.iCode = iCode;
         this.oQty = oQty;
         this.price = price;
+        this.total = total;
     }
 
     public String getoId() {
@@ -33,11 +35,11 @@ public class OrderDetailsDTO {
         this.iCode = iCode;
     }
 
-    public double getoQty() {
+    public int getoQty() {
         return oQty;
     }
 
-    public void setoQty(double oQty) {
+    public void setoQty(int oQty) {
         this.oQty = oQty;
     }
 
@@ -49,6 +51,14 @@ public class OrderDetailsDTO {
         this.price = price;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
         return "OrderDetailsDTO{" +
@@ -56,6 +66,7 @@ public class OrderDetailsDTO {
                 ", iCode='" + iCode + '\'' +
                 ", oQty=" + oQty +
                 ", price=" + price +
+                ", total=" + total +
                 '}';
     }
 }

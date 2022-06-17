@@ -3,6 +3,8 @@ package dao;
 
 import dao.custom.impl.CustomerDAOImpl;
 import dao.custom.impl.ItemDAOImpl;
+import dao.custom.impl.OrderDAOImpl;
+import dao.custom.impl.OrderDetailsDAOImpl;
 
 public class DAOFactory {
 
@@ -26,6 +28,10 @@ public class DAOFactory {
                 return new ItemDAOImpl();
             case CUSTOMER:
                 return new CustomerDAOImpl();
+            case ORDERS:
+                return new OrderDAOImpl();
+            case ORDERDETAILS:
+                return new OrderDetailsDAOImpl();
             default:
                 return null;
         }

@@ -1,9 +1,3 @@
-$("#btnGetAllCustomer").click(function () {
-    resetCustomer();
-    loadAllCustomer();
-
-});
-
 loadAllCustomer();
 
 
@@ -32,9 +26,13 @@ $("#btnAddCustomer").click(function () {
             console.log(error);
         }
     });
-
 });
 
+$("#btnGetAllCustomer").click(function () {
+    resetCustomer();
+    loadAllCustomer();
+
+});
 
 function resetCustomer() {
     $("#customerId").val("");
@@ -66,7 +64,7 @@ $("#btnDelete").click(function () {
     let customerID = $("#customerId").val();
 
     $.ajax({
-        url: "http://localhost:8085/backEnd/customer?customerID=" + customerID,
+        url: "http://localhost:8085/backEnd/customer?cusId=" + customerID,
         method: "DELETE",
 
         success: function (res) {
@@ -124,7 +122,7 @@ $("#btnSearch").click(function () {
     let customerID = $("#txtSearchCusID").val();
     $("#customerTable").empty();
     $.ajax({
-        url: "http://localhost:8085/backEnd/customer?option=SEARCH&customerID=" + customerID,
+        url: "http://localhost:8085/backEnd/customer?option=SEARCH&cusId=" + customerID,
         method: "GET",
         success: function (resp) {
             let row = `<tr><td>${resp.id}</td><td>${resp.name}</td><td>${resp.address}</td><td>${resp.contact}</td></tr>`;

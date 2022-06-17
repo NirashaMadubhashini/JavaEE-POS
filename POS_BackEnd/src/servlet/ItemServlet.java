@@ -1,4 +1,10 @@
 package servlet;
+
+import bo.BOFactory;
+import bo.custom.ItemBO;
+import dto.ItemDTO;
+import javafx.collections.ObservableList;
+
 import javax.annotation.Resource;
 import javax.json.*;
 import javax.servlet.ServletException;
@@ -10,8 +16,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/item")
@@ -21,9 +25,11 @@ public class ItemServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
 
+    private final ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ITEM);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
+        try {
             String option = req.getParameter("option");
             String code = req.getParameter("iCode");
             resp.setContentType("application/json");
@@ -32,51 +38,35 @@ public class ItemServlet extends HttpServlet {
 
             resp.addHeader("Access-Control-Allow-Origin", "*");
 
-            switch (option){
+            switch (option) {
                 case "SEARCH":
-                    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Item where itemCode=?");
-                    preparedStatement.setObject(1,code);
-                    ResultSet resultSet1 = preparedStatement.executeQuery();
-                    JsonArrayBuilder arrayBuilder1 = Json.createArrayBuilder();
 
-                    while (resultSet1.next()){
-                        String itemCode = resultSet1.getString(1);
-                        String name = resultSet1.getString(2);
-                        String qtyOnHand = resultSet1.getString(3);
-                        String price = resultSet1.getString(4);
+                    ItemDTO itemDTO1 = itemBO.searchItem(code, connection);
+                    JsonObjectBuilder objectBuilder1 = Json.createObjectBuilder();
 
-                        JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                        objectBuilder.add("itemCode", itemCode);
-                        objectBuilder.add("name", name);
-                        objectBuilder.add("qtyOnHand", qtyOnHand);
-                        objectBuilder.add("price", price);
-                        arrayBuilder1.add(objectBuilder.build());
-                    }
+                    objectBuilder1.add("itemCode", itemDTO1.getItemCode());
+                    objectBuilder1.add("name", itemDTO1.getItemName());
+                    objectBuilder1.add("qtyOnHand", itemDTO1.getQtyOnHand());
+                    objectBuilder1.add("price", itemDTO1.getUnitPrice());
 
-                    JsonObjectBuilder response = Json.createObjectBuilder();
-                    response.add("status", 200);
-                    response.add("message", "Done");
-                    response.add("data", arrayBuilder1.build());
-                    writer.print(response.build());
+                    writer.print(objectBuilder1.build());
+
                     break;
 
                 case "GETALL":
 
-                    ResultSet resultSet = connection.prepareStatement("SELECT * FROM Item").executeQuery();
+                    ObservableList<ItemDTO> allItems = itemBO.getAllItem(connection);
                     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-                    while (resultSet.next()){
-                        String itemCode = resultSet.getString(1);
-                        String name = resultSet.getString(2);
-                        String qtyOnHand = resultSet.getString(3);
-                        String price = resultSet.getString(4);
+                    for (ItemDTO itemDTO : allItems) {
 
                         JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                        objectBuilder.add("itemCode", itemCode);
-                        objectBuilder.add("name", name);
-                        objectBuilder.add("qtyOnHand", qtyOnHand);
-                        objectBuilder.add("price", price);
+                        objectBuilder.add("itemCode", itemDTO.getItemCode());
+                        objectBuilder.add("itemName", itemDTO.getItemName());
+                        objectBuilder.add("itemQty", itemDTO.getQtyOnHand());
+                        objectBuilder.add("itemPrice", itemDTO.getUnitPrice());
                         arrayBuilder.add(objectBuilder.build());
+
                     }
 
                     JsonObjectBuilder response1 = Json.createObjectBuilder();
@@ -90,7 +80,7 @@ public class ItemServlet extends HttpServlet {
 
             connection.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -98,31 +88,45 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String itemCode = req.getParameter("iCode");
-        String itemName = req.getParameter("iName");
-        String itemQuantity = req.getParameter("iQuantity");
-        String itemPrice = req.getParameter("iPrice");
-
-        resp.addHeader("Access-Control-Allow-Origin", "*");
-
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
 
-        try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("Insert into Item values(?,?,?,?)");
-            preparedStatement.setObject(1, itemCode);
-            preparedStatement.setObject(2, itemName);
-            preparedStatement.setObject(3, itemQuantity);
-            preparedStatement.setObject(4, itemPrice);
 
-            if (preparedStatement.executeUpdate() > 0){
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+
+        try {
+           Connection connection = dataSource.getConnection();
+
+            ItemDTO itemDTO = new ItemDTO(
+                    jsonObject.getString("itemCode"),
+                    jsonObject.getString("itemName"),
+                    Integer.parseInt(jsonObject.getString("itemQty")),
+                    Double.parseDouble(jsonObject.getString("itemPrice"))
+            );
+
+            try {
+                if (itemBO.addItem(connection, itemDTO)) {
+                    JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+                    resp.setStatus(HttpServletResponse.SC_CREATED);
+                    objectBuilder.add("status", 200);
+                    objectBuilder.add("message", "Successfully Added");
+                    objectBuilder.add("data", "");
+                    writer.print(objectBuilder.build());
+                }
+
+            } catch (SQLException e) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                resp.setStatus(HttpServletResponse.SC_CREATED);
-                objectBuilder.add("status", 200);
-                objectBuilder.add("message", "Successfully Added");
-                objectBuilder.add("data", "");
+                objectBuilder.add("status", 400);
+                objectBuilder.add("message", "Error");
+                objectBuilder.add("data", e.getLocalizedMessage());
                 writer.print(objectBuilder.build());
+                resp.setStatus(HttpServletResponse.SC_OK);
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
 
             connection.close();
@@ -136,7 +140,6 @@ public class ItemServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -149,16 +152,14 @@ public class ItemServlet extends HttpServlet {
 
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("Delete from Item where itemCode=?");
-            preparedStatement.setObject(1, itemCode);
 
-            if (preparedStatement.executeUpdate() > 0){
+            if (itemBO.deleteItem(connection, itemCode)) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-                objectBuilder.add("status",200);
-                objectBuilder.add("data","");
-                objectBuilder.add("message","Successfully Deleted");
+                objectBuilder.add("status", 200);
+                objectBuilder.add("data", "");
+                objectBuilder.add("message", "Successfully Deleted");
                 writer.print(objectBuilder.build());
-            }else {
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 objectBuilder.add("status", 400);
                 objectBuilder.add("data", "Wrong Id Inserted");
@@ -168,7 +169,7 @@ public class ItemServlet extends HttpServlet {
 
             connection.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             resp.setStatus(200);
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             objectBuilder.add("status", 500);
@@ -177,7 +178,6 @@ public class ItemServlet extends HttpServlet {
             writer.print(objectBuilder.build());
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -185,10 +185,6 @@ public class ItemServlet extends HttpServlet {
 
         JsonReader reader = Json.createReader(req.getReader());
         JsonObject jsonObject = reader.readObject();
-        String itemCode = jsonObject.getString("iCode");
-        String itemName = jsonObject.getString("iName");
-        String itemQty = jsonObject.getString("iQuantity");
-        String itemPrice = jsonObject.getString("iPrice");
 
         PrintWriter writer = resp.getWriter();
         resp.setContentType("Application/json");
@@ -197,19 +193,20 @@ public class ItemServlet extends HttpServlet {
 
         try {
             Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Item SET name=?,qtyOnHand=?,price=? WHERE itemCode=?");
-            preparedStatement.setObject(1,itemName);
-            preparedStatement.setObject(2,itemQty);
-            preparedStatement.setObject(3,itemPrice);
-            preparedStatement.setObject(4,itemCode);
 
-            if (preparedStatement.executeUpdate() > 0){
+            ItemDTO itemDTO = new ItemDTO(
+                    jsonObject.getString("itemCode"),
+                    jsonObject.getString("itemName"),
+                    Integer.parseInt(jsonObject.getString("itemQty")),
+                    Double.parseDouble(jsonObject.getString("itemPrice"))
+            );
+            if (itemBO.updateItem(connection, itemDTO)) {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 objectBuilder.add("status", 200);
                 objectBuilder.add("message", "Successfully Updated");
                 objectBuilder.add("data", "");
                 writer.print(objectBuilder.build());
-            }else{
+            } else {
                 JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
                 objectBuilder.add("status", 400);
                 objectBuilder.add("message", "Update Failed");
@@ -219,7 +216,7 @@ public class ItemServlet extends HttpServlet {
 
             connection.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
             objectBuilder.add("status", 500);
             objectBuilder.add("message", "Update Failed");
@@ -228,6 +225,7 @@ public class ItemServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Access-Control-Allow-Origin", "*");

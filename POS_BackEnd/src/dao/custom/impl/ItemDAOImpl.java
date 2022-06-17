@@ -29,8 +29,8 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public Item search(String itemCode, Connection connection) throws SQLException, ClassNotFoundException {
-        ResultSet rst = CrudUtil.executeQuery(connection,"SELECT * FROM Item WHERE itemCode=?",itemCode);
+    public Item search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.executeQuery(connection,"SELECT * FROM Item WHERE itemCode=?",code);
         if (rst.next()){
             return new Item(
                     rst.getString(1),
@@ -61,5 +61,10 @@ public class ItemDAOImpl implements ItemDAO {
         }
 
         return obList;
+    }
+
+    @Override
+    public boolean updateQtyOnHand(Connection connection, String id, int qty) throws SQLException, ClassNotFoundException {
+        return  CrudUtil.executeUpdate(connection, "UPDATE Item SET qtyOnHand=(qtyOnHand - "+ qty +")WHERE itemCode=?", id);
     }
 }

@@ -24,7 +24,7 @@ public class CustomerServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     DataSource dataSource;
 
-    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+    private final  CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -89,13 +89,6 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        CustomerDTO customerDTO = new CustomerDTO(
-                req.getParameter("cusId"),
-                req.getParameter("cusName"),
-                req.getParameter("cusAddress"),
-                req.getParameter("cusTp")
-        );
-
         PrintWriter writer = resp.getWriter();
         resp.setContentType("application/json");
 
@@ -106,7 +99,12 @@ public class CustomerServlet extends HttpServlet {
         try {
             connection = dataSource.getConnection();
 
-            String customerID = req.getParameter("cusId");
+            CustomerDTO customerDTO = new CustomerDTO(
+                    req.getParameter("cusId"),
+                    req.getParameter("cusName"),
+                    req.getParameter("cusAddress"),
+                    req.getParameter("cusTp")
+            );
 
             try {
                 if (customerBO.addCustomer(connection, customerDTO)) {

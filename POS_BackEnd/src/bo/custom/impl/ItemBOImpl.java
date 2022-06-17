@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ItemBOImpl implements ItemBO {
-    ItemDAO itemDAO = (ItemDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ITEM);
+    private final ItemDAO itemDAO = (ItemDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ITEM);
 
     @Override
     public boolean addItem(Connection connection, ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
