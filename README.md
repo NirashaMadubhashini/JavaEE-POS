@@ -1,5 +1,6 @@
-# JavaEE-POS
-> This is a POS System developed by using javaEE.
+# JavaEE-POS<br>
+ 
+ This is a POS System developed by using javaEE.
 
 DashBoard
 ![screenshot](POS_FrontEnd/assets/project/dash.png)
