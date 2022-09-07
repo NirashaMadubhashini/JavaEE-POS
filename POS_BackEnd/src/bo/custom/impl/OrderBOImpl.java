@@ -29,8 +29,10 @@ public class OrderBOImpl implements OrderBO {
     private final ItemDAO itemDAO = (ItemDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ITEM);
     private final OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ORDERS);
     private final OrderDetailsDAO orderDetailsDAO = (OrderDetailsDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ORDERDETAILS);
+
     @Override
-    public boolean saveOrder(Connection connection, OrdersDTO ordersDTO) throws SQLException, ClassNotFoundException {
+    public boolean saveOrder(Connection connection, OrdersDTO ordersDTO) {
+
         Connection con = null;
 
         try {
@@ -80,6 +82,7 @@ public class OrderBOImpl implements OrderBO {
 
     @Override
     public boolean saveOrderDetail(Connection connection, OrdersDTO ordersDTO) throws SQLException, ClassNotFoundException {
+
         for (OrderDetailsDTO item : ordersDTO.getOrderDetail()) {
 
             OrderDetails orderDetails = new OrderDetails(
@@ -101,6 +104,7 @@ public class OrderBOImpl implements OrderBO {
     public boolean updateQtyOnHand(Connection connection, String id, int qty) throws SQLException, ClassNotFoundException {
         return itemDAO.updateQtyOnHand(connection, id, qty);
     }
+
 
     @Override
     public ObservableList<OrdersDTO> getAllOrders(Connection connection) throws SQLException, ClassNotFoundException {
@@ -150,6 +154,7 @@ public class OrderBOImpl implements OrderBO {
         return orderDetailDTOS;
     }
 
+
     @Override
     public String generateNewOrderId(Connection connection) throws SQLException, ClassNotFoundException {
         return orderDAO.generateNewOrderId(connection);
@@ -164,4 +169,5 @@ public class OrderBOImpl implements OrderBO {
     public ArrayList<ItemDTO> getAllItems(Connection connection) throws SQLException, ClassNotFoundException {
         return null;
     }
+
 }

@@ -28,13 +28,15 @@ generateOrderID();
 function loadAllOrders(){
     $("#orderTable").empty();
     $.ajax({
-        url: "http://localhost:8085/backEnd/orders?option=GETALL",
+        url: "orders?option=GETALL",
         method: "GET",
         success: function (resp) {
             for (const orders of resp.data) {
 
-                let row = `<tr><td>${orders.orderID}</td><td>${orders.cId}</td><td>${orders.orderDate}</td><td>
+                let row = `<tr><td>${orders.orderID}</td><td>${orders.cusId}</td><td>${orders.orderDate}</td><td>
                 ${orders.total}</td><td>${orders.discount}</td><td>${orders.subTotal}</td></tr>`;
+                $("#orderTable").append(row);
+
             }
             bindOrderDetailsClickEvent();
         }
@@ -122,8 +124,6 @@ $("#txtOrderCusID").click(function () {
             }
         }
     });
-
-
 });
 
 
@@ -353,7 +353,7 @@ $("#btnSubmitOrder").click(function () {
             cId:$("#txtOrderCusID option:selected").text(),
             orderDate:$("#txtOrderDate").val(),
             total:$("#total").text(),
-            discount:discount.toString(),
+            discount:$("#txtDiscount").toString(),
             subTotal:$("#subtotal").text(),
             ODetail : orderDetails
         };
@@ -435,5 +435,8 @@ function bindOrderDetailsClickEvent(){
 }
 
 bindOrderDetailsClickEvent();
+
+
+
 
 

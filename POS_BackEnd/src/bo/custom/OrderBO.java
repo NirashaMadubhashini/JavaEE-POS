@@ -24,9 +24,11 @@ public interface OrderBO extends SuperBO {
 
     ArrayList<OrderDetailsDTO> searchOrderDetails(String orderId, Connection connection) throws SQLException, ClassNotFoundException;
 
-    String generateNewOrderId(Connection connection)throws SQLException, ClassNotFoundException;
+    String generateNewOrderId(Connection connection) throws SQLException, ClassNotFoundException;
 
-    ArrayList<CustomerDTO> getAllCustomers(Connection connection)throws SQLException, ClassNotFoundException;
+    ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException, ClassNotFoundException;
 
-    ArrayList<ItemDTO> getAllItems(Connection connection)throws SQLException, ClassNotFoundException;
+    ArrayList<ItemDTO> getAllItems(Connection connection) throws SQLException, ClassNotFoundException;
+
+
 }

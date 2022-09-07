@@ -52,7 +52,7 @@ public class PlaceOrderServlet extends HttpServlet {
 
                     for (OrderDetailsDTO orderDetail : orderDetails) {
                         JsonObjectBuilder ob = Json.createObjectBuilder();
-                        ob.add("oId", orderDetail.getoId());
+                        ob.add("orderId", orderDetail.getoId());
                         ob.add("iCode", orderDetail.getiCode());
                         ob.add("qty", orderDetail.getoQty());
                         ob.add("price", orderDetail.getPrice());
@@ -101,7 +101,7 @@ public class PlaceOrderServlet extends HttpServlet {
 
             connection.close();
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -123,7 +123,7 @@ public class PlaceOrderServlet extends HttpServlet {
             for (JsonValue orderDetail: oDetail) {
                 JsonObject asJsonObject = orderDetail.asJsonObject();
                 orderDetailsDTOS.add(new OrderDetailsDTO(
-                        asJsonObject.getString("oId"),
+                        asJsonObject.getString("orderId"),
                         asJsonObject.getString("itemCode"),
                         Integer.parseInt(asJsonObject.getString("qty")),
                         Double.parseDouble(asJsonObject.getString("price")),
@@ -167,6 +167,7 @@ public class PlaceOrderServlet extends HttpServlet {
         }
 
     }
+
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
